@@ -30,6 +30,7 @@ with DAG(
 
         url = params["url"]
         print(url)
+        print(type(url))
         url = url.format(city, key, lang, metric)
         r = requests.get(url)
 
