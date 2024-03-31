@@ -32,7 +32,7 @@ with DAG(
         print(url)
         print(type(url))
         #url = url.format(city, key, lang, metric)
-        url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}&lang={lang}&units=metric"
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={key}&lang={lang}&units={metric}"
         r = requests.get(url)
 
         return r.json()
