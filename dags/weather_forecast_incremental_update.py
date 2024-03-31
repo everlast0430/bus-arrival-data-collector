@@ -9,7 +9,8 @@ import datetime
 with DAG(
     dag_id="weather_forcast_incremental_update",
     schedule="* 6-8,17-20 * * 1-5",
-
+    start_date=pendulum.datetime(2024, 3, 1, tz="Asia/Seoul"),
+    catchup=False
 ) as dag:
     
     # 수원 날씨정보 가져오기
