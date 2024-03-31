@@ -27,6 +27,7 @@ with DAG(
         key = params["key"]
         lang = params["lang"]
         metric = params["metric"]
+        print(city)
 
         url = params["url"]
         url = url.format(city, key, lang, metric)
