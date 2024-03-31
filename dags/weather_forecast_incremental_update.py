@@ -23,14 +23,13 @@ with DAG(
                 })
     def extract(**kwargs):
         params = kwargs.get('params')
-        print(params)
         city = params['city']
         key = params["key"]
         lang = params["lang"]
         metric = params["metric"]
-        print(city)
 
         url = params["url"]
+        print(url)
         url = url.format(city, key, lang, metric)
         r = requests.get(url)
 
