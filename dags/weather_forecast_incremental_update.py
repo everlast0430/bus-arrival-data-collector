@@ -23,6 +23,7 @@ with DAG(
                 })
     def extract(**kwargs):
         params = kwargs.get('params')
+        print(params)
         city = params['city']
         key = params["key"]
         lang = params["lang"]
