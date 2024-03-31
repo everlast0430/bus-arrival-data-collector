@@ -25,7 +25,7 @@ with DAG(
         params = kwargs.get('params')
         url = params["url"]
         key = params["key"]
-        lat = parmas["lat"]
+        lat = params["lat"]
         lon = params["lon"]
         url = url.format(city, key, lang, metric)
         r = requests.get(url)
