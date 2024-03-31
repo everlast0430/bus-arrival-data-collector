@@ -37,6 +37,6 @@ with DAG(
     def transform(**kwargs):
         print(kwargs['ti'])
 
-extract() >> transform()
+    extract() >> transform()
 
         
