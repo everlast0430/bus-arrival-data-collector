@@ -24,14 +24,15 @@ with DAG(
     def extract(**kwargs):
         params = kwargs.get('params')
         city = params['city']
-        key = params["key"]
-        lang = params["lang"]
-        metric = params["metric"]
+        key = params['key']
+        lang = params['lang']
+        metric = params['metric']
 
-        url = params["url"]
+        url = params['url']
         print(url)
         print(type(url))
-        url = url.format(city, key, lang, metric)
+        #url = url.format(city, key, lang, metric)
+        url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}&lang={lang}&units=metric"
         r = requests.get(url)
 
         return r.json()
