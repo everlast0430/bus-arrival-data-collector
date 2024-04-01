@@ -41,8 +41,9 @@ with DAG(
     # 날씨 정보 전처리
     @task(task_id='py_transform')
     def transform(**kwargs):
+        print('start')
         print(kwargs['ti'])
-
+        print('end')
     extract() >> transform()
 
         
