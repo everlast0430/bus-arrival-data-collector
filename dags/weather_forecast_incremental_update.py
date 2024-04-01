@@ -43,7 +43,7 @@ with DAG(
     def transform(**kwargs):
         print('start')
         print(kwargs['ti'])
-        value = kwargs['ti'].xcom_pull(task_id='py_extract')
+        value = kwargs['ti'].xcom_pull(task_ids='py_extract')
         print(value)
         print('end')
     extract() >> transform()
