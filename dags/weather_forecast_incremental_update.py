@@ -1,18 +1,23 @@
 from airflow import DAG
 from airflow.decorators import task
 from airflow.models import Variable
+from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 
 import requests
 import pendulum
 import datetime
 
-
 with DAG(
     dag_id="weather_forcast_incremental_update",
-    schedule="* 6-8,17-20 * * 1-5",
+    schedule="10 6-8,17-20 * * 1-5",
     start_date=pendulum.datetime(2024, 3, 1, tz="Asia/Seoul"),
-    catchup=False
+    catchup=False,
+    tags=['weather']
 ) as dag:
+    
+    def get_BigQuery_connection():
+        hook = BigQueryHook(gcp_conn_id="bigquery_default")
+        return hook.get_conn().cursor()
     
     # 수원 날씨정보 가져오기
     @task(task_id='py_extract',
@@ -41,11 +46,34 @@ with DAG(
     # 날씨 정보 전처리
     @task(task_id='py_transform')
     def transform(**kwargs):
-        print('start')
-        print(kwargs['ti'])
         value = kwargs['ti'].xcom_pull(task_ids='py_extract')
+        city = value['name'] # 'name': 'Suwon-si'
+        weather_info = value['weather'] #'weather': [{'id': 803,'main': 'Clouds','description': '튼구름','icon': '04n'}]
+        created_at = datetime.fromtimestamp(value['dt']).strftime('%Y-%m-%d %H:%M:%S')
+        
+        return city, weather_info, created_at
+
+    @task(task_id='py_load')
+    def load(**kwargs):
+
+        # cur = get_BigQuery_connection()
+        value = kwargs['ti'].xcom_pull(task_ids='py_transform')
+        print('value')
         print(value)
-        print('end')
-    extract() >> transform()
+        
+
+
+        # logging.info(create_sql)
+        
+        # try:
+        #     cur.execute(insert_sql)
+        #     cur.excute("Commit;")
+        # except Exception as e:
+        #     cur.excute("Rollback;")
+        #     raise # 실패시 명확히 실패했음을 알기위한 용도
+    
+    extract() >> transform() >> load()
+
+    
 
         
