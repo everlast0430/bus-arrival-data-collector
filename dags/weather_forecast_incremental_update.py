@@ -47,6 +47,7 @@ with DAG(
     @task(task_id='py_transform')
     def transform(**kwargs):
         value = kwargs['ti'].xcom_pull(task_ids='py_extract')
+        print(value)
         city = value['name'] # 'name': 'Suwon-si'
         weather_info = value['weather'] #'weather': [{'id': 803,'main': 'Clouds','description': '튼구름','icon': '04n'}]
         created_at = datetime.fromtimestamp(value['dt']).strftime('%Y-%m-%d %H:%M:%S')
