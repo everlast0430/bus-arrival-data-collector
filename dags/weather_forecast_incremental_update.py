@@ -3,9 +3,12 @@ from airflow.decorators import task
 from airflow.models import Variable
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 
+from datetime import datetime
+
 import requests
 import pendulum
-from datetime import datetime
+import logging
+
 
 with DAG(
     dag_id="weather_forcast_incremental_update",
@@ -37,6 +40,7 @@ with DAG(
         url = params['url']
         print(url)
         print(type(url))
+        logging.info(url)
         #url = url.format(city, key, lang, metric)
         url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={key}&lang={lang}&units={metric}"
         r = requests.get(url)
