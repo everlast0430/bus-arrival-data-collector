@@ -5,7 +5,7 @@ from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 
 import requests
 import pendulum
-import datetime
+from datetime import datetime
 
 with DAG(
     dag_id="weather_forcast_incremental_update",
