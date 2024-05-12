@@ -24,7 +24,7 @@ import logging
             'metric' : "metric"
             })
 def extract(**kwargs):
-    conn_info = Variable.get("mysql_connection_info")
+    conn_info = dict(Variable.get("mysql_connection_info"))
     host = conn_info['host']
 
     params = kwargs.get('params')
