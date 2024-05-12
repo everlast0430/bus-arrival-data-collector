@@ -69,11 +69,15 @@ def load(**kwargs):
         raise
 
 with DAG(
-    dag_id="weather_forcast_incremental_update",
-    schedule="10 6-8,17-20 * * 1-5",
+    dag_id="weather_current_incremental_update",
+    schedule="*/10 6-8,17-20 * * 1-5",
     start_date=pendulum.datetime(2024, 3, 1, tz="Asia/Seoul"),
     catchup=False,
-    tags=['weather']
+    tags=['weather'],
+    default_args = {
+        'retries': 1,
+        'retry_delay': timedelta(minutes=1),
+    }
 ) as dag:
     
     extract() >> transform() >> load()
