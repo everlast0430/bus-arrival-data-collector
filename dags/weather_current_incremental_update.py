@@ -2,7 +2,7 @@ from airflow import DAG
 from airflow.decorators import task
 from airflow.models import Variable
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 import pendulum
