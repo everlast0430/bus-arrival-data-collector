@@ -10,7 +10,7 @@ import logging
 #import pymysql
 
 
-print(Variable.get("mysql_connection_info"))  
+
 # def get_Mysql_connection():
 #     conn = pymysql.connect(host='', port=, user=, password=,)
 #     return hook.get_conn().cursor()
@@ -24,6 +24,7 @@ print(Variable.get("mysql_connection_info"))
             'metric' : "metric"
             })
 def extract(**kwargs):
+    print(Variable.get("mysql_connection_info"))  
     params = kwargs.get('params')
     city = params['city']
     key = params['key']
