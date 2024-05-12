@@ -7,7 +7,7 @@ from datetime import datetime
 import requests
 import pendulum
 import logging
-import pymysql
+#import pymysql
 
 
 print(Variable.get("mysql_connection_info"))  
