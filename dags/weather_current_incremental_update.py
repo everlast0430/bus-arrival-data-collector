@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import requests
 import pendulum
 import logging
-import pymysql
+#import pymysql
 
 
 # def get_Mysql_connection():
@@ -23,6 +23,7 @@ import pymysql
             'metric' : "metric"
             })
 def extract(**kwargs):
+    print(requests)
     print(Variable.get("mysql_connection_info"))
 
     params = kwargs.get('params')
