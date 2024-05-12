@@ -17,8 +17,8 @@ print(Variable.get("mysql_connection_info"))
 
 # 수원 날씨정보 가져오기
 @task(task_id='py_extract',
-        params={'url' : Variable.get("ojw_open_weather_api_url"),
-            'key' : Variable.get("ojw_open_weather_api_key"),
+        params={'url' : Variable.get("open_weather_api_url"),
+            'key' : Variable.get("open_weather_api_key"),
             'city' : "Suwon",
             'lang' : "kr",
             'metric' : "metric"
