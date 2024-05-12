@@ -8,8 +8,6 @@ import requests
 import pendulum
 import logging
 import pymysql
-import ast
-
 
 
 # def get_Mysql_connection():
