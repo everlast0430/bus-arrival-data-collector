@@ -1,27 +1,28 @@
 from airflow import DAG
 from airflow.decorators import task
 from airflow.models import Variable
-from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
+from airflow.providers.postgres.hook.postgres import PostgresHook
 from datetime import datetime, timedelta
 
 import requests
 import pendulum
 import logging
-#import pymysql
 
 
-# def get_Mysql_connection():
-#     conn = pymysql.connect(host='', port=, user=, password=,)
-#     return hook.get_conn().cursor()
+def get_Redshift_connection(autocommit=False):
+    hook = PostgresHook(postgres_conn_id='redshift_dev_db')
+    conn = hook.get_conn()
+    conn.autocommit = autocommit
+    return conn.cursor()
 
 # 수원 날씨정보 가져오기
 @task(task_id='py_extract',
-        params={'url' : Variable.get("open_weather_api_url"),
-            'key' : Variable.get("open_weather_api_key"),
-            'city' : "Suwon",
-            'lang' : "kr",
-            'metric' : "metric"
-            })
+      params={'url' : Variable.get("open_weather_api_url"),
+              'key' : Variable.get("open_weather_api_key"),
+              'city' : "Suwon",
+              'lang' : "kr",
+              'metric' : "metric"
+              })
 def extract(**kwargs):
     print(requests)
     print(Variable.get("mysql_connection_info"))
@@ -36,7 +37,11 @@ def extract(**kwargs):
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={key}&lang={lang}&units={metric}"
     r = requests.get(url)
 
-    return r.json()
+    try:
+        return r.json()
+    except Exception as e:
+        logging.info(r.text)
+        raise e
 
 # 날씨 정보 전처리
 @task(task_id='py_transform')
@@ -46,32 +51,31 @@ def transform(**kwargs):
     weather_info = value['weather']
     created_at = datetime.fromtimestamp(value['dt']).strftime('%Y-%m-%d %H:%M:%S')
     
-    return city, weather_info, created_at
+    return (city, weather_info, created_at)
 
 # 날씨 데이터 적재
 @task(task_id='py_load')
 def load(**kwargs):
-    cur = get_BigQuery_connection()
-
+    cur = get_Redshift_connection()
     value = kwargs['ti'].xcom_pull(task_ids='py_transform')
+    logging.info(value)
     city = value[0]
     weather_main = value[1][0]['main']
     created_at = value[2]
-
-    schema = 'OJW_ADHOC'
-    table = 'weather_current'
+    schema = 'dev.adhoc'
+    table = 'WEATHER_CURRENT'
     
     insert_sql = f"INSERT INTO {schema}.{table} VALUE ({city}, {weather_main}, {created_at})"
-    logging.info(create_sql)
+    logging.info(insert_sql)
     try:
         cur.execute(insert_sql)
         cur.execute("COMMIT;")
     except Exception as e:
         cur.excute("ROLLBACK;")
-        raise
+        raise e
 
 with DAG(
-    dag_id="weather_current_incremental_update",
+    dag_id="weather_current",
     schedule="*/10 6-8,17-20 * * 1-5",
     start_date=pendulum.datetime(2024, 3, 1, tz="Asia/Seoul"),
     catchup=False,
