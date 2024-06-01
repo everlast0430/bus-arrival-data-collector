@@ -93,7 +93,7 @@ def load(**kwargs):
     cur = get_Redshift_connection()
     schema = 'dev.adhoc'
     table = 'get_bus_arrival_item'
-    data = kwargs['ti'].xcom_pull(task_ids='py_extract')
+    data = kwargs['ti'].xcom_pull(task_ids='py_extract_and_transform')
     logging.info(data)
     insert_sql = f"INSERT INTO {schema}.{table} VALUES ('{created_date}', '{weather_condition}', '{city}')"
 
