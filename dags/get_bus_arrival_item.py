@@ -93,23 +93,25 @@ def load(**kwargs):
     cur = get_Redshift_connection()
     schema = 'dev.adhoc'
     table = 'get_bus_arrival_item'
-    data = kwargs['ti'].xcom_pull(task_ids='py_extract_and_transform')
-    logging.info(data)
-    insert_sql = f"INSERT INTO {schema}.{table} VALUES ('{created_date}', '{weather_condition}', '{city}')"
+    
+    data = kwargs['ti'].xcom_pull(task_ids='py_extract_and_transform')[0]
+    route_id = data['route_id']
+    station_id = data['station_id']
+    created_date = data['created_at']
+    station_order = data['station_order']
+    flag = data['flag']
+    plate_no1 = data['plate_no1']
+    location_no1 = data['location_no1']
+    predict_time1 = data['predict_time1']
+    remain_seat_cnt1 = data['remain_seat_cnt1']
+    plate_no2 = data['plate_no2']
+    location_no2 = data['location_no2']
+    predict_time2 = data['predict_time2']
+    remain_seat_cnt2 = data['remain_seat_cnt2']
 
-    #     route_id varchar(30),
-    # station_id varchar(30),
-    # created_date timestamp primary key ,
-    # station_order varchar(30),
-    # flag varchar(30),
-    # plate_no1 varchar(30),
-    # location_no1 varchar(30),
-    # predict_time1 varchar(30),
-    # remain_seat_cnt1 varchar(30),
-    # plate_no2 varchar(30),
-    # location_no2 varchar(30),
-    # predict_time varchar(30),
-    # remain_seat_cnt2 varchar(30)
+    logging.info(data)
+    insert_sql = f"INSERT INTO {schema}.{table} VALUES ('{route_id}', '{station_id}', '{created_date}','{station_order}', '{flag}', \
+        '{plate_no1}','{location_no1}', '{predict_time1}', '{remain_seat_cnt1}','{plate_no2}', '{location_no2}', '{predict_time2}','{remain_seat_cnt2}')"
 
     try:
         cur.execute(insert_sql)
