@@ -55,7 +55,6 @@ def transform(**kwargs):
 def load(**kwargs):
     cur = get_Redshift_connection()
     value = kwargs['ti'].xcom_pull(task_ids='py_transform')
-    logging.info(value)
     city = value[0]
     weather_condition = value[1]
     created_at = value[2]
@@ -63,7 +62,6 @@ def load(**kwargs):
     table = 'WEATHER_CURRENT'
     
     insert_sql = f"INSERT INTO {schema}.{table} VALUES ('{created_at}', '{weather_condition}', '{city}')"
-    logging.info(insert_sql)
     
     try:
         cur.execute(insert_sql)
