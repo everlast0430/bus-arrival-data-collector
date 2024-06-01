@@ -62,7 +62,7 @@ def load(**kwargs):
     schema = 'dev.adhoc'
     table = 'WEATHER_CURRENT'
     
-    insert_sql = f"INSERT INTO {schema}.{table} VALUES ({city}, {weather_condition}, {created_at})"
+    insert_sql = f"INSERT INTO {schema}.{table} VALUES ({created_at}, {weather_condition}, {city})"
     logging.info(insert_sql)
     try:
         cur.execute(insert_sql)
