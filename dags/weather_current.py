@@ -45,10 +45,10 @@ def extract(**kwargs):
 def transform(**kwargs):
     value = kwargs['ti'].xcom_pull(task_ids='py_extract')
     city = value['name']
-    weather_info = value['weather']
+    weather_condition = value['weather'][0]['main']
     created_at = datetime.fromtimestamp(value['dt']).strftime('%Y-%m-%d %H:%M:%S')
     
-    return (city, weather_info, created_at)
+    return (city, weather_condition, created_at)
 
 # 날씨 데이터 적재
 @task(task_id='py_load')
@@ -57,7 +57,7 @@ def load(**kwargs):
     value = kwargs['ti'].xcom_pull(task_ids='py_transform')
     logging.info(value)
     city = value[0]
-    weather_main = value[1][0]['main']
+    weather_condition = value[1]
     created_at = value[2]
     schema = 'dev.adhoc'
     table = 'WEATHER_CURRENT'
@@ -73,7 +73,7 @@ def load(**kwargs):
 
 with DAG(
     dag_id="weather_current",
-    schedule="*/10 6-8,17-20 * * 1-5",
+    schedule="*/10 6-9,17-20 * * 1-5",
     start_date=pendulum.datetime(2024, 3, 1, tz="Asia/Seoul"),
     catchup=False,
     tags=['weather'],
