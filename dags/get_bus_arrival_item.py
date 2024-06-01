@@ -92,9 +92,24 @@ def extract_and_transform(**kwargs):
 def load(**kwargs):
     cur = get_Redshift_connection()
     schema = 'dev.adhoc'
-    table = 'WEATHER_CURRENT'
+    table = 'get_bus_arrival_item'
+    data = kwargs['ti'].xcom_pull(task_ids='py_extract')
+    logging.info(data)
+    insert_sql = f"INSERT INTO {schema}.{table} VALUES ('{created_date}', '{weather_condition}', '{city}')"
 
-    insert_sql = f"INSERT INTO {schema}.{table} VALUES ('{created_at}', '{weather_condition}', '{city}')"
+    #     route_id varchar(30),
+    # station_id varchar(30),
+    # created_date timestamp primary key ,
+    # station_order varchar(30),
+    # flag varchar(30),
+    # plate_no1 varchar(30),
+    # location_no1 varchar(30),
+    # predict_time1 varchar(30),
+    # remain_seat_cnt1 varchar(30),
+    # plate_no2 varchar(30),
+    # location_no2 varchar(30),
+    # predict_time varchar(30),
+    # remain_seat_cnt2 varchar(30)
 
     try:
         cur.execute(insert_sql)
