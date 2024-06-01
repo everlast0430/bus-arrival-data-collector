@@ -24,9 +24,6 @@ def get_Redshift_connection(autocommit=False):
               'metric' : "metric"
               })
 def extract(**kwargs):
-    print(requests)
-    print(Variable.get("mysql_connection_info"))
-
     params = kwargs.get('params')
     city = params['city']
     key = params['key']
