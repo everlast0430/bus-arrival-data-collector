@@ -3,6 +3,7 @@ from airflow.decorators import task
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from datetime import datetime, timedelta
 
+import os
 import pendulum
 import logging
 import pandas as pd
@@ -15,16 +16,7 @@ def get_Redshift_connection(autocommit=False):
 
 @task(task_id='py_etl')
 def get_station_info():
-    import os
-
-    #현재 파일 실제 경로
-    logging.info(os.path.realpath(__file__))
-
-    #현재 파일 절대 경로
-    logging.info(os.path.abspath(__file__))
-    path = os.getcwd() + '/dataset/station_info.csv'
     path = '/opt/airflow/dataset/station_info.csv'
-
     df = pd.read_csv(f'{path}')
     insert_sql = ''
     schema = 'dev.adhoc'
