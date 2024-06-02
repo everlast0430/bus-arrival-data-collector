@@ -22,7 +22,7 @@ def get_station_info():
 
     #현재 파일 절대 경로
     logging.info(os.path.abspath(__file__))
-    path = '/opt/airflow/dataset/station_info.csv'
+    path = os.getcwd() + '/dataset/station_info.csv'
     logging.info(os.getcwd() + '/dataset/')
 
     df = pd.read_csv(f'{path}')
