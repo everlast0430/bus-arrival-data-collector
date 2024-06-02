@@ -31,7 +31,7 @@ def get_station_info():
         station_name = df.iloc[i]['station_name']
         pass_route_cnt = df.iloc[i]['pass_route_cnt']
 
-        insert_sql += f"INSERT INTO {schema}.temp_{table} VALUES ('{year_month}', '{manage_city}', '{bus_type}', '{station_id}', '{station_no}', '{station_name}', '{pass_route_cnt}');"
+        insert_sql += f"INSERT INTO {schema}.{table} VALUES ('{year_month}', '{manage_city}', '{bus_type}', '{station_id}', '{station_no}', '{station_name}', '{pass_route_cnt}');"
 
     cur = get_Redshift_connection()
 
