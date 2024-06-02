@@ -24,7 +24,7 @@ def get_station_info():
     logging.info(os.path.abspath(__file__))
     path = os.getcwd() + '/dataset/station_info.csv'
     logging.info(os.getcwd() + '/dataset/')
-    logging.info(os.listdir(os.getcwd() + '/dataset/'))
+    logging.info(os.listdir(os.getcwd() + '/dataset'))
 
     df = pd.read_csv(f'{path}')
     insert_sql = ''
