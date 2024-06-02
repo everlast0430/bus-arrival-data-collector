@@ -118,7 +118,7 @@ def load(**kwargs):
         cur.execute("COMMIT;")
     except Exception as e:
         cur.execute("ROLLBACK;")
-        logging.info(result_code)
+        logging.info(insert_sql)
         raise e
 
 with DAG(
