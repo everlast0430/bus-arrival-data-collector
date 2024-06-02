@@ -15,7 +15,7 @@ def get_Redshift_connection(autocommit=False):
 
 @task(task_id='py_etl')
 def get_station_info():
-    df = pd.read_csv("../dataset/station_info.csv")
+    df = pd.read_csv("/home/bis/airflow/dataset/station_info.csv")
     insert_sql = ''
     schema = 'dev.adhoc'
     table = 'station_info'
