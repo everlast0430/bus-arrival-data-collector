@@ -18,13 +18,13 @@ def get_station_info():
     import os
 
     #현재 파일 실제 경로
-    print(os.path.realpath(__file__))
+    logging.info(os.path.realpath(__file__))
 
     #현재 파일 절대 경로
-    print(os.path.abspath(__file__))
+    logging.info(os.path.abspath(__file__))
     path = os.getcwd() + '/dataset/station_info.csv'
 
-    print(os.listdir(os.getcwd() + '/dataset/'))
+    logging.info(os.listdir(os.getcwd() + '/dataset/'))
 
     df = pd.read_csv(f'{path}')
     insert_sql = ''
