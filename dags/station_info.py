@@ -17,8 +17,14 @@ def get_Redshift_connection(autocommit=False):
 def get_station_info():
     import os
 
-    #현재 폴더 경로; 작업 폴더 기준
+    #현재 파일 실제 경로
+    print(os.path.realpath(__file__))
+
+    #현재 파일 절대 경로
+    print(os.path.abspath(__file__))
     path = os.getcwd() + '/dataset/station_info.csv'
+
+    print(os.listdir(os.getcwd() + '/dataset/'))
 
     df = pd.read_csv(f'{path}')
     insert_sql = ''
