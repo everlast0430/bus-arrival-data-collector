@@ -22,22 +22,21 @@ def get_station_info():
     schema = 'dev.adhoc'
     table = 'station_info'
 
+    for i in range(len(df)):
+        year_month = df.iloc[i]['year_month']
+        manage_city = df.iloc[i]['manage_city']
+        bus_type = df.iloc[i]['bus_type']
+        station_id = df.iloc[i]['station_id']
+        station_no = df.iloc[i]['station_no']
+        station_name = df.iloc[i]['station_name']
+        pass_route_cnt = df.iloc[i]['pass_route_cnt']
+        insert_sql += f"INSERT INTO {schema}.{table} VALUES ('{year_month}', '{manage_city}', '{bus_type}', '{station_id}', '{station_no}', '{station_name}', '{pass_route_cnt}');"
+
     cur = get_Redshift_connection()
 
     try:
-        for i in range(len(df)):
-            year_month = df.iloc[i]['year_month']
-            manage_city = df.iloc[i]['manage_city']
-            bus_type = df.iloc[i]['bus_type']
-            station_id = df.iloc[i]['station_id']
-            station_no = df.iloc[i]['station_no']
-            station_name = df.iloc[i]['station_name']
-            pass_route_cnt = df.iloc[i]['pass_route_cnt']
-
-            insert_sql += f"INSERT INTO {schema}.{table} VALUES ('{year_month}', '{manage_city}', '{bus_type}', '{station_id}', '{station_no}', '{station_name}', '{pass_route_cnt}');"
-            cur.execute(insert_sql)
-            cur.execute("COMMIT;")
-        
+        cur.execute(insert_sql)
+        cur.execute("COMMIT;")
     except Exception as e:
         cur.execute("ROLLBACK;")
         logging.info(insert_sql)
