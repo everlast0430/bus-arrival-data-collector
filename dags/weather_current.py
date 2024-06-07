@@ -73,7 +73,7 @@ def load(**kwargs):
 
 with DAG(
     dag_id="weather_current",
-    schedule="*/10 6-9 * * *",
+    schedule="*/10 6-8 * * *",
     start_date=pendulum.datetime(2024, 3, 1, tz="Asia/Seoul"),
     catchup=False,
     tags=['weather'],
