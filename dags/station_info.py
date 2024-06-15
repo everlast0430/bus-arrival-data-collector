@@ -16,7 +16,7 @@ def get_Redshift_connection(autocommit=False):
 
 @task(task_id='py_etl')
 def get_station_info():
-    path = '/opt/airflow/dataset/station_info.csv'
+    path = '/opt/airflow/dataset/station_info.csv' # Docker Container의 Volume
     df = pd.read_csv(f'{path}')
     insert_sql = ''
     schema = 'dev.adhoc'
