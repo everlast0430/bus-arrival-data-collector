@@ -123,7 +123,7 @@ def load(**kwargs):
 
 with DAG(
     dag_id="get_bus_arrival_item",
-    schedule="*/1 6-9 * * *",
+    schedule="*/1 6-8 * * *",
     start_date=pendulum.datetime(2024, 3, 1, tz="Asia/Seoul"),
     catchup=False,
     tags=['bus'],
